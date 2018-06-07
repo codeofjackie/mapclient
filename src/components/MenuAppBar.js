@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Settings from '@material-ui/icons/Settings';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -32,7 +33,6 @@ class MenuAppBar extends React.Component {
 
     state = {
         auth: true,
-        anchorEl: null,
         top: false,
         left: false,
         bottom: false,
@@ -40,14 +40,6 @@ class MenuAppBar extends React.Component {
     };
 
     myRef = React.createRef();
-
-    handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-    };
-
-    handleClose = () => {
-    this.setState({ anchorEl: null });
-    };
 
     handleOpenDrawer = ()=>{
 
@@ -82,25 +74,9 @@ class MenuAppBar extends React.Component {
                         onClick={this.handleMenu}
                         color="inherit"
                       >
-                        <Settings />
+                      <ExitToAppIcon/>
                       </IconButton>
-                      <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        open={open}
-                        onClose={this.handleClose}
-                      >
-                        <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                      </Menu>
+
                     </div>
                   )}
                 </Toolbar>

@@ -7,9 +7,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
-import InboxIcon from '@material-ui/icons/Inbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
+import ListIcon from '@material-ui/icons/List';
 import Avatar from '@material-ui/core/Avatar';
+import user from '../static/images/User.png';
 
 const styles = {
     row: {
@@ -36,41 +37,29 @@ class SideList extends React.Component {
 
         return <div className={classes.list}>
             <List>
-                <div className={classes.row} button>
-                    <Avatar
-                    alt="Adelle Charles"
-                    src="static/media/User.png"
-                    className={classNames(classes.avatar, classes.bigAvatar)}
-                    />
-                </div>
-                <ListItemText primary={testname} style={{textAlign:"center"}} />
-                <Divider />
                 <ListItem button>
-                    <ListItemIcon>
-                        <DraftsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Drafts" />
+                <Avatar
+                alt="Adelle Charles"
+                src={user}
+                button
+                className={classNames(classes.avatar, classes.bigAvatar)}
+                />
+                <ListItemText primary={testname} style={{textAlign:"center"}} />
                 </ListItem>
                 <Divider />
                 <ListItem button>
                     <ListItemIcon>
-                        <InboxIcon />
+                        <ListIcon />
                     </ListItemIcon>
                     <ListItemText primary="行车记录" />
                 </ListItem>
                 <ListItem button>
                     <ListItemIcon>
-                        <DraftsIcon />
+                        <AttachMoneyIcon />
                     </ListItemIcon>
                     <ListItemText primary="充值" />
                 </ListItem>
                 <Divider />
-                <ListItem button>
-                    <ListItemIcon>
-                        <InboxIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="登出" />
-                </ListItem>
             </List>
         </div>;
     }
