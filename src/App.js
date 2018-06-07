@@ -12,7 +12,7 @@ import MotorcycleIcon from '@material-ui/icons/Motorcycle';
 
 const styles = {
   root: {
-    width: window.innerWidth,
+    width: "100vw",
   },
 };
 
