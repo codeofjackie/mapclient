@@ -10,13 +10,7 @@ import Settings from '@material-ui/icons/Settings';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import InboxIcon from '@material-ui/icons/Inbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
+import SideList from './SideList';
 
 const styles = {
     root: {
@@ -28,9 +22,6 @@ const styles = {
     menuButton: {
       marginLeft: -12,
       marginRight: 20,
-    },
-    list: {
-      width: 250,
     },
     fullList: {
       width: 'auto',
@@ -72,38 +63,6 @@ class MenuAppBar extends React.Component {
         const { classes } = this.props;
         const { auth, anchorEl } = this.state;
         const open = Boolean(anchorEl);
-  
-        const sideList = (
-          <div className={classes.list}>
-            <List>
-              <ListItem button>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Inbox" />
-              </ListItem>
-              <ListItem button>
-                <ListItemIcon>
-                  <DraftsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Drafts" />
-              </ListItem>
-              <Divider />
-              <ListItem button>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <DraftsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Drafts" />
-            </ListItem>
-            </List>
-          </div>
-        );
 
         return (
             <div className={classes.root}>
@@ -153,7 +112,7 @@ class MenuAppBar extends React.Component {
                     onClick={this.toggleDrawer('left', false)}
                     onKeyDown={this.toggleDrawer('left', false)}
                   >
-                    {sideList}
+                    <SideList/>
                   </div>
               </Drawer>
             </div>
