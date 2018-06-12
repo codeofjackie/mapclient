@@ -1,0 +1,4 @@
+encoding: utf-8
+# Site settings
+
+baseurl: "./build" # the subpath of your site, e.g. /blog/
