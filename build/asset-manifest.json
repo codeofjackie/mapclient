@@ -1,8 +1,8 @@
 {
-  "main.css": "./static/css/main.36375fa2.css",
-  "main.css.map": "./static/css/main.36375fa2.css.map",
-  "main.js": "./static/js/main.0e3c830d.js",
-  "main.js.map": "./static/js/main.0e3c830d.js.map",
-  "static\\media\\earthquakes.geojson": "./static/media/earthquakes.5908e4b4.geojson",
-  "static\\media\\logo.svg": "./static/media/logo.5d5d9eef.svg"
+  "main.css": "static/css/main.36375fa2.css",
+  "main.css.map": "static/css/main.36375fa2.css.map",
+  "main.js": "static/js/main.0e3c830d.js",
+  "main.js.map": "static/js/main.0e3c830d.js.map",
+  "static\\media\\earthquakes.geojson": "static/media/earthquakes.5908e4b4.geojson",
+  "static\\media\\logo.svg": "static/media/logo.5d5d9eef.svg"
 }

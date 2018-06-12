@@ -1,4 +1,4 @@
 encoding: utf-8
 # Site settings
 
-baseurl: "/mapclient" # the subpath of your site, e.g. /blog/
+baseurl: "mapclient/build" # the subpath of your site, e.g. /blog/
