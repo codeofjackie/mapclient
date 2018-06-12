@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
-import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
+//import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 import 'mapbox-gl/dist/mapbox-gl.css'
-import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css'
-import bike from './earthquakes.geojson'
+//import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css'
+import bike from 'earthquakes.geojson'
 
 
 const mapstyle = {
