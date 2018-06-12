@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
+import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 import 'mapbox-gl/dist/mapbox-gl.css'
+import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css'
+import bike from './earthquakes.geojson'
+
 
 const mapstyle = {
   border:0,
   width :"100%",
-  height:"100%"
+  height:"100%"  
 }
 
 export default class Map extends Component {  
@@ -18,80 +22,112 @@ export default class Map extends Component {
         };
     }
 
-    getLocation(){
-
-        navigator.geolocation.getCurrentPosition(
-            this.printmap,
-            (event)=>{
-                alert("我们无法获取你当前的位置，请打开定位，并给予应用权限");
-                this.printmap({coords:{longitude:0,latitude:34}});
-            }
-        )
-    }
-
     componentDidMount() {
         //this.getLocation();
-        this.printmap({coords:{longitude:114,latitude:32}});
+        this.printmap({coords:{longitude:120.5,latitude:40.5}});
     }
 
     printmap(position){
         mapboxgl.accessToken = 'pk.eyJ1IjoiY29kZW9mamFja2llIiwiYSI6ImNqaDc2dXE5OTA0OWEycXMwNHkxbzRhbjUifQ.dJofzeR0LJuNLOAEA_28Dw';
-        
-        window.GeoLocate = [position.coords.longitude,position.coords.latitude];
-        
+                
         var map = new mapboxgl.Map({
             container: this.props.id,
             style: 'mapbox://styles/mapbox/streets-v9',
-            center:window.GeoLocate,
-            zoom: 12
+            center:[-120, 50],
+            zoom: 2
         });
 
-        map.addControl(new mapboxgl.NavigationControl());//添加缩放控制器件
+        // 添加缩放控制器件
+        map.addControl(new mapboxgl.NavigationControl());
+        
+        // 为地图添加地理定位控件
+        map.addControl(new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }));
 
-        var url = 'https://wanderdrone.appspot.com/';
+        // map.addControl(new MapboxDirections({
+        //     accessToken: mapboxgl.accessToken
+        // }), 'top-left');
         
         map.on('load', function () {
-            window.setInterval(function() {
-                map.getSource('drone').setData(url);
-            }, 10000);
-
-            map.addSource('drone', { type: 'geojson', data: url });
+            map.addSource("bike-park", {
+                "type": "geojson",
+                "data": bike
+            });
+            
+            //停车区
             map.addLayer({
-                "id": "drone",
-                "type": "symbol",
-                "source": "drone",
-                "layout": {
-                    "icon-image": "rocket-15"
-                }
+                "id": "park-boundary",
+                "type": "fill",
+                "source": "bike-park",
+                "minzoom": 8,
+                "paint": {
+                    "fill-color": "#888888",
+                    "fill-opacity": 0.4
+                },
+                "filter": ["==", "$type", "Polygon"]
             });
-
-            map.on('click', 'drone', function (e) {
-                var coordinates = e.features[0].geometry.coordinates.slice();
-                //var description = e.features[0].properties.description;
-                var description = "这个点的坐标是"+coordinates[0]+" "+coordinates[1];
-
-                // Ensure that if the map is zoomed out such that multiple
-                // copies of the feature are visible, the popup appears
-                // over the copy being pointed to.
-                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                }
-
-                new mapboxgl.Popup()
-                    .setLngLat(coordinates)
-                    .setHTML(description)
-                    .addTo(map);
-            });
-
-            // Change the cursor to a pointer when the mouse is over the places layer.
-            map.on('mouseenter', 'drone', function () {
-                map.getCanvas().style.cursor = 'pointer';
-            });
-
-            // Change it back to a pointer when it leaves.
-            map.on('mouseleave', 'drone', function () {
-                map.getCanvas().style.cursor = '';
-            });
+            
+            //热力图点
+            map.addLayer({
+                "id": "earthquakes-heat",
+                "type": "heatmap",
+                "source": "bike-park",
+                "maxzoom": 9,
+                "paint": {
+                    // Increase the heatmap weight based on frequency and property magnitude
+                    "heatmap-weight": [
+                        "interpolate",
+                        ["linear"],
+                        ["get", "mag"],
+                        0, 0,
+                        6, 1
+                    ],
+                    // Increase the heatmap color weight weight by zoom level
+                    // heatmap-intensity is a multiplier on top of heatmap-weight
+                    "heatmap-intensity": [
+                        "interpolate",
+                        ["linear"],
+                        ["zoom"],
+                        0, 1,
+                        9, 3
+                    ],
+                    // 热力图的颜色域，定义域为 (low) to 1 (high).
+                    // Begin color ramp at 0-stop with a 0-transparancy color
+                    // 产生模糊特效
+                    "heatmap-color": [
+                        "interpolate",
+                        ["linear"],
+                        ["heatmap-density"],
+                        0, "rgba(33,102,172,0)",
+                        0.2, "rgb(103,169,207)",
+                        0.4, "rgb(209,229,240)",
+                        0.6, "rgb(253,219,199)",
+                        0.8, "rgb(239,138,98)",
+                        1, "rgb(1,123,12)"
+                    ],
+                    // Adjust the heatmap radius by zoom level
+                    "heatmap-radius": [
+                        "interpolate",
+                        ["linear"],
+                        ["zoom"],
+                        0, 2,
+                        9, 20
+                    ],
+                    // 热力图变换为点层时的缩放级别
+                    "heatmap-opacity": [
+                        "interpolate",
+                        ["linear"],
+                        ["zoom"],
+                        7, 1,
+                        8, 0
+                    ],
+                },
+                "filter": ["==", "$type", "Point"]
+            }, 'waterway-label');
         });
     }
 

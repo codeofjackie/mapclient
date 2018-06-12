@@ -23,7 +23,7 @@ class App extends Component {
     let usestate = "用车"
     return (
       <div>
-        <MenuAppBar/>
+        <MenuAppBar style={{position:"fixed",top:0}}/>
         <div style={{padding:"0px",display:"flex",height:window.innerHeight-80}}>
           <Map id="mymap"/>
         </div>
