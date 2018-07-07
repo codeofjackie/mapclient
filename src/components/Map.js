@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 //import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 import 'mapbox-gl/dist/mapbox-gl.css'
 //import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css'
-import bike from 'earthquakes.geojson'
+import bike from './earthquakes.geojson'
 
 
 const mapstyle = {
@@ -29,7 +29,7 @@ export default class Map extends Component {
 
     printmap(position){
         mapboxgl.accessToken = 'pk.eyJ1IjoiY29kZW9mamFja2llIiwiYSI6ImNqaDc2dXE5OTA0OWEycXMwNHkxbzRhbjUifQ.dJofzeR0LJuNLOAEA_28Dw';
-                
+
         var map = new mapboxgl.Map({
             container: this.props.id,
             style: 'mapbox://styles/mapbox/streets-v9',
@@ -53,6 +53,7 @@ export default class Map extends Component {
         // }), 'top-left');
         
         map.on('load', function () {
+            map.setLayoutProperty('country-label-lg', 'text-field', ['get', 'name_' + "zh"]);
             map.addSource("bike-park", {
                 "type": "geojson",
                 "data": bike
@@ -65,12 +66,11 @@ export default class Map extends Component {
                 "source": "bike-park",
                 "minzoom": 8,
                 "paint": {
-                    "fill-color": "#888888",
+                    "fill-color": "#FF0000",
                     "fill-opacity": 0.4
                 },
                 "filter": ["==", "$type", "Polygon"]
             });
-            
             //热力图点
             map.addLayer({
                 "id": "earthquakes-heat",
@@ -82,7 +82,7 @@ export default class Map extends Component {
                     "heatmap-weight": [
                         "interpolate",
                         ["linear"],
-                        ["get", "mag"],
+                        ["get", "title"],
                         0, 0,
                         6, 1
                     ],
@@ -102,12 +102,12 @@ export default class Map extends Component {
                         "interpolate",
                         ["linear"],
                         ["heatmap-density"],
-                        0, "rgba(33,102,172,0)",
-                        0.2, "rgb(103,169,207)",
-                        0.4, "rgb(209,229,240)",
-                        0.6, "rgb(253,219,199)",
-                        0.8, "rgb(239,138,98)",
-                        1, "rgb(1,123,12)"
+                        0, "rgba(0,0,255,0)",
+                        0.2, "rgb(51,0,204)",
+                        0.4, "rgb(102,0,153)",
+                        0.6, "rgb(153,0,102)",
+                        0.8, "rgb(204,0,51)",
+                        1, "rgb(255,0,0)"
                     ],
                     // Adjust the heatmap radius by zoom level
                     "heatmap-radius": [
@@ -126,8 +126,31 @@ export default class Map extends Component {
                         8, 0
                     ],
                 },
+                
                 "filter": ["==", "$type", "Point"]
             }, 'waterway-label');
+
+            //车的数量
+            map.addLayer({
+                "id": "symbol",
+                "type": "symbol",
+                "source": "bike-park",
+                "minzoom": 8,
+                "layout": {
+                    "text-field": "{title}",
+                    "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
+                    "text-size": 20,
+                    "text-transform": "uppercase",
+                    "text-letter-spacing": 0.05,
+                    "text-offset": [0, 1.5]
+                },
+                "paint": {
+                    "text-color": "#202",
+                    "text-halo-color": "#fff",
+                    "text-halo-width": 2
+                },
+                "filter": ["==", "$type", "Point"]
+            });
         });
     }
 

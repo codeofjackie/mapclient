@@ -41,7 +41,7 @@ class SideList extends React.Component {
                 <Avatar
                 alt="Adelle Charles"
                 src={user}
-                button
+                button="true"
                 className={classNames(classes.avatar, classes.bigAvatar)}
                 />
                 <ListItemText primary={testname} style={{textAlign:"center"}} />
